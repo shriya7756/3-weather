@@ -1,0 +1,8 @@
+cat weather.txt
+cat weather.txt | python3 temp-mapper.py | sort | python3 temp-reducer.py
+hadoop fs -mkdir /rmm_weather_data
+hadoop fs -put weather.txt /rmm_weather_data
+hadoop fs -ls /rmm_weather_data
+hadoop jar /home/hadoop/hadoop/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar -file temp-mapper.py -mapper "python3 temp-mapper.py" -file temp-reducer.py -reducer "python3 temp-reducer.py" -input /rmm_weather_data -output /rmm_weather_data/weather_output
+hadoop fs -ls /rmm_weather_data/weather_output
+hadoop fs -cat /rmm_weather_data/weather_output/part-00000
